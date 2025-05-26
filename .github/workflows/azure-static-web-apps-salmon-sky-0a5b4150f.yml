@@ -15,6 +15,7 @@ jobs:
       with:
         channel: 'beta'
     - name: Install packages
+      working-directory: deliever_u
       run: |
         flutter config --enable-web
         flutter pub get
