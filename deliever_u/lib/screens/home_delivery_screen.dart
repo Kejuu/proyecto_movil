@@ -15,10 +15,9 @@ class HomeDeliveryScreen extends StatelessWidget {
     return Scaffold(
       appBar: _buildAppBar(context),
       body: _buildBody(context),
-      bottomNavigationBar: _buildBottomNavigationBar(),
+      bottomNavigationBar: _buildBottomNavigationBar(context),
     );
   }
-
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       title: Column(
@@ -41,13 +40,6 @@ class HomeDeliveryScreen extends StatelessWidget {
       ),
       backgroundColor: AppColors.red,
       actions: [
-        IconButton(
-          icon: const Icon(Icons.person),
-          onPressed: () {
-            // Navegación a perfil
-            context.push('/profile');
-          },
-        ),
         Consumer(
           builder: (context, ref, _) {
             final cart = ref.watch(newCartProvider);
@@ -111,11 +103,17 @@ class HomeDeliveryScreen extends StatelessWidget {
               ),
               contentPadding: const EdgeInsets.symmetric(vertical: 0),
             ),
+            readOnly: true, // Aquí importante para no editar aquí
+            onTap: () {
+              // Navegar a pantalla de búsqueda, con texto vacío
+              context.push('/search');
+            },
           ),
         ),
       ),
     );
   }
+
 
   Widget _buildBody(BuildContext context) {
     return SingleChildScrollView(
@@ -177,7 +175,7 @@ class HomeDeliveryScreen extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           SizedBox(
-            height: 205,
+            height: 227,
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
@@ -428,13 +426,24 @@ class HomeDeliveryScreen extends StatelessWidget {
     );
   }
 
-  BottomNavigationBar _buildBottomNavigationBar() {
+  BottomNavigationBar _buildBottomNavigationBar(BuildContext context) {
     return BottomNavigationBar(
+      currentIndex: 0,
+      onTap: (index) {
+        if (index == 1) {
+          context.push('/search');
+        }
+        if (index == 2) {
+          context.push('/orders');
+        }
+        if (index == 3) {
+          context.push('/profile');
+        }
+      },
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
         BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Buscar'),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart), label: 'Pedidos'),
+        BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: 'Pedidos'),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
       ],
       selectedItemColor: AppColors.red,

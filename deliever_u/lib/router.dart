@@ -1,8 +1,11 @@
+import 'package:rappi_u/screens/AddOnsScreen.dart';
+import 'package:rappi_u/screens/SearchScreen.dart';
 import 'package:rappi_u/screens/auth_validator_screen.dart';
 import 'package:rappi_u/screens/cart_items_screen.dart';
 import 'package:rappi_u/screens/cart_screen.dart';
 import 'package:rappi_u/screens/home_delivery_screen.dart';
 import 'package:rappi_u/screens/order_screen.dart';
+import 'package:rappi_u/screens/orders_screen.dart';
 import 'package:rappi_u/screens/product_detail_screen.dart';
 import 'package:rappi_u/screens/profile_screen.dart';
 import 'package:rappi_u/screens/restaurant_screen.dart';
@@ -83,5 +86,18 @@ description: args['description'] ?? 'Descripción no disponible', rating: '',
       path: '/cart',
       builder: (context, state) => const CartScreen(),
     ),
+    GoRoute(
+      path: '/search',
+      builder: (context, state) => const SearchScreen(),
+    ),
+    GoRoute(
+      path: '/orders',
+      builder: (context, state) => const OrdersScreen(),
+    ),
+    GoRoute(
+      path: '/add-ons',
+      builder: (context, state) => const AddOnsScreen(),
+    ),
+
   ],
 );

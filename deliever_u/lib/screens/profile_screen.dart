@@ -1,38 +1,71 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:rappi_u/controllers/login_controller.dart';
-import 'package:rappi_u/utils/colors.dart';
 
-class ProfileScreen extends ConsumerWidget {
+class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
+    final String userName = 'Cristiano Ronaldo';
+    final String email = 'cristiano.ronaldo@realmadrid.com';
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        automaticallyImplyLeading: true,
-        title: const Text('Perfil'),
+        title: const Text('Mi Perfil'),
       ),
-      backgroundColor: AppColors.tertiaryColor,
-      body: Center(
-        child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.secondaryColor,
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          const SizedBox(height: 16),
+          CircleAvatar(
+            radius: 50,
+            backgroundColor: Colors.grey[300],
+            child: const Icon(Icons.person, size: 50, color: Colors.white),
+          ),
+          const SizedBox(height: 16),
+          Center(
+            child: Column(
+              children: [
+                Text(userName,
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 4),
+                Text(email, style: const TextStyle(color: Colors.grey)),
+              ],
             ),
-            onPressed: () {
-              ref.read(signInControllerProvider.notifier).logout();
-              context.go('/auth');
+          ),
+          const SizedBox(height: 32),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.edit),
+            title: const Text('Editar perfil'),
+            onTap: () {
+              // Acción para editar perfil
             },
-            child: const Text(
-              'Cerrar Sesión',
-              style: TextStyle(fontSize: 32, color: AppColors.black),
-            )),
+          ),
+          ListTile(
+            leading: const Icon(Icons.lock),
+            title: const Text('Cambiar contraseña'),
+            onTap: () {
+              // Acción para cambiar contraseña
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.settings),
+            title: const Text('Configuración'),
+            onTap: () {
+              // Acción para configuración
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.logout, color: Colors.red),
+            title: const Text('Cerrar sesión', style: TextStyle(color: Colors.red)),
+            onTap: () {
+              // Acción para cerrar sesión
+              context.go('/auth'); // Reemplaza con tu ruta de login si aplica
+            },
+          ),
+        ],
       ),
     );
   }
