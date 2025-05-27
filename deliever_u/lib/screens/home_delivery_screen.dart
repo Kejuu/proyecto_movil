@@ -19,26 +19,52 @@ class HomeDeliveryScreen extends StatelessWidget {
     );
   }
   AppBar _buildAppBar(BuildContext context) {
+    String selectedLocation = 'Universidad de Medellín, Biblioteca';
+
+    final List<String> locations = [
+      'Universidad de Medellín, Biblioteca',
+      'Universidad de Medellín, Bloque 8',
+      'Universidad de Medellín, CDC',
+      'Universidad de Medellín, Caguan',
+    ];
+
     return AppBar(
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Entregar a',
-            style: TextStyle(fontSize: 12, color: Colors.white70),
-          ),
-          const Row(
+      title: StatefulBuilder(
+        builder: (context, setState) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Universidad de Medellín, Biblioteca',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              const Padding(
+                padding: EdgeInsets.only(top:15), // Espacio hacia abajo
+                child: Text(
+                  'Entregar a',
+                  style: TextStyle(fontSize: 15, color: Colors.white70),
+                ),
               ),
-              Icon(Icons.keyboard_arrow_down, size: 20),
+              DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  dropdownColor: Colors.red,
+                  value: selectedLocation,
+                  icon: const Icon(Icons.keyboard_arrow_down, color: Colors.white),
+                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
+                  onChanged: (newValue) {
+                    setState(() {
+                      selectedLocation = newValue!;
+                    });
+                  },
+                  items: locations.map((location) {
+                    return DropdownMenuItem(
+                      value: location,
+                      child: Text(location, style: const TextStyle(color: Colors.white)),
+                    );
+                  }).toList(),
+                ),
+              ),
             ],
-          ),
-        ],
+          );
+        },
       ),
-      backgroundColor: AppColors.red,
+      backgroundColor: Colors.red,
       actions: [
         Consumer(
           builder: (context, ref, _) {
@@ -119,7 +145,7 @@ class HomeDeliveryScreen extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          _buildFoodCategoriesCarousel(), // Carrusel modificado
+          _buildFoodCategoriesCarousel(context), // Carrusel modificado
           _buildPopularItemsSection(context), // Nueva sección de ítems populares
           _buildRestaurantsList(context),
         ],
@@ -127,68 +153,125 @@ class HomeDeliveryScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFoodCategoriesCarousel() {
+  Widget _buildFoodCategoriesCarousel(BuildContext context) {
     List<Map<String, dynamic>> foodCategories = [
       {'icon': Icons.fastfood, 'name': 'Hamburguesas'},
-      {'icon': Icons.fastfood, 'name': 'Papas'},
+      {'icon': Icons.local_cafe, 'name': 'Papas'},
       {'icon': Icons.local_pizza, 'name': 'Pizzas'},
       {'icon': Icons.ramen_dining, 'name': 'Asiática'},
       {'icon': Icons.kebab_dining, 'name': 'Comida Rápida'},
       {'icon': Icons.icecream, 'name': 'Postres'},
     ];
 
-    return SizedBox(
-      height: 100,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: foodCategories.length,
-        itemBuilder: (ctx, index) {
-          return Padding(
-            padding: const EdgeInsets.all(8),
-            child: Column(
-              children: [
-                CircleAvatar(
-                  radius: 30,
-                  child: Icon(foodCategories[index]['icon'],
-                      color: AppColors.red),
-                  backgroundColor: Colors.grey[200],
+    return Consumer(
+      builder: (context, ref, _) {
+        final selectedCategory = ref.watch(selectedCategoryProvider);
+
+        return SizedBox(
+          height: 100,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: foodCategories.length,
+            itemBuilder: (ctx, index) {
+              final category = foodCategories[index];
+              final isSelected = category['name'] == selectedCategory;
+
+              return Padding(
+                padding: const EdgeInsets.all(8),
+                child: GestureDetector(
+                  onTap: () {
+                    // Cambiar categoría en el provider
+                    ref.read(selectedCategoryProvider.notifier).state = category['name'];
+                  },
+                  child: Column(
+                    children: [
+                      CircleAvatar(
+                        radius: isSelected ? 35 : 30,
+                        backgroundColor: isSelected ? AppColors.red : Colors.grey[200],
+                        child: Icon(category['icon'],
+                            color: isSelected ? Colors.white : AppColors.red),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(category['name'],
+                          style: TextStyle(
+                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                            color: isSelected ? AppColors.red : Colors.black,
+                          )),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 4),
-                Text(foodCategories[index]['name']),
-              ],
-            ),
-          );
-        },
-      ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 
+
+
   Widget _buildPopularItemsSection(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Lo más popular',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    final items = [
+      {'name': 'Hamburguesa Clásica', 'image': 'assets/images/burger.jpg', 'rating': '4.8 ⭐', 'category': 'Hamburguesas'},
+      {'name': 'Papas Fritas', 'image': 'assets/images/fries.jpg', 'rating': '4.5 ⭐', 'category': 'Papas'},
+      {'name': 'Pizza Pepperoni', 'image': 'assets/images/pizza.jpg', 'rating': '4.7 ⭐', 'category': 'Pizzas'},
+      {'name': 'Tacos al Pastor', 'image': 'assets/images/tacos.png', 'rating': '4.6 ⭐', 'category': 'Comida Rápida'},
+      {'name': 'Pollo Frito', 'image': 'assets/images/fried_chicken.png', 'rating': '4.4 ⭐', 'category': 'Comida Rápida'},
+      {'name': 'Combo Familiar', 'image': 'assets/images/combo.png', 'rating': '4.9 ⭐', 'category': 'Comida Rápida'},
+      {'name': 'Ensalada César', 'image': 'assets/images/salad.png', 'rating': '4.2 ⭐', 'category': 'Ensaladas'},
+      {'name': 'Refresco Grande', 'image': 'assets/images/refresco.png', 'rating': '4.3 ⭐', 'category': 'Bebidas'},
+      {'name': 'Helado de Vainilla', 'image': 'assets/images/ice_cream.png', 'rating': '4.6 ⭐', 'category': 'Postres'},
+      {'name': 'Sushi Variado', 'image': 'assets/images/sushi.png', 'rating': '4.7 ⭐', 'category': 'Asiática'},
+    ];
+
+    return Consumer(
+      builder: (context, ref, _) {
+        final selectedCategory = ref.watch(selectedCategoryProvider);
+
+        final filteredItems = selectedCategory == null
+            ? items
+            : items.where((item) => item['category'] == selectedCategory).toList();
+
+        return Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Text(
+                    'Lo más popular',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  if (selectedCategory != null)
+                    TextButton(
+                      onPressed: () => ref.read(selectedCategoryProvider.notifier).state = null,
+                      child: const Text("Ver todo"),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                height: 227,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: filteredItems.map((item) {
+                    return _buildFoodItemCard(
+                      context,
+                      item['name']!,
+                      item['image']!,
+                      item['rating']!,
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 8),
-          SizedBox(
-            height: 227,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                _buildFoodItemCard(context, 'Hamburguesa Clásica', 'assets/images/burger.jpg', '4.8 ⭐'),
-                _buildFoodItemCard(context, 'Papas Fritas', 'assets/images/fries.jpg', '4.5 ⭐'),
-                _buildFoodItemCard(context, 'Pizza Pepperoni', 'assets/images/pizza.jpg', '4.7 ⭐'),
-              ],
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
+
 
   Widget _buildFoodItemCard(BuildContext context, String name, String imagePath, String rating) {
     return GestureDetector(
@@ -367,7 +450,7 @@ class HomeDeliveryScreen extends StatelessWidget {
                         borderRadius: const BorderRadius.vertical(
                             top: Radius.circular(12)),
                         child: Image.asset(
-                          'assets/images/restaurant_${index + 1}.jpg',
+                          'assets/images/restaurant_${index + 1}.png',
                           height: 150,
                           width: double.infinity,
                           fit: BoxFit.cover,

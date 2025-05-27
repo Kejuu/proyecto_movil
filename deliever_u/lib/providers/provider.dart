@@ -8,6 +8,8 @@ final ordersProvider = StateNotifierProvider<OrdersNotifier, List<Order>>((ref) 
   return OrdersNotifier();
 });
 
+final selectedCategoryProvider = StateProvider<String?>((ref) => null);
+
 class OrdersNotifier extends StateNotifier<List<Order>> {
   OrdersNotifier() : super([]);
 
