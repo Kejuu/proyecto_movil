@@ -75,12 +75,9 @@ class HomeDeliveryScreen extends StatelessWidget {
               clipBehavior: Clip.none,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.shopping_cart),
+                  icon: const Icon(Icons.shopping_cart, color: Colors.white),
                   onPressed: () {
-                    // Navegación a carrito solo si hay items
-                    if (itemCount > 0) {
                       context.push('/cart');
-                    }
                   },
                 ),
                 if (itemCount > 0)
