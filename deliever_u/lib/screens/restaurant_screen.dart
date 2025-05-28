@@ -144,49 +144,85 @@ class RestaurantScreen extends StatelessWidget {
   }
 
   List<Map<String, dynamic>> _getRestaurantProducts(String restaurantName) {
-    // Datos de ejemplo - deberías reemplazar con tus datos reales
-    if (restaurantName == 'Tarcisio') {
-      return [
-        {
-          'name': 'Hamburguesa Clásica',
-          'imagePath': 'assets/images/burger.jpg',
-          'price': 11000.0,
-          'rating': '4.8 ⭐',
-          'description': 'Hamburguesa con queso, lechuga y tomate',
-        },
-        {
-          'name': 'Hamburguesa Doble',
-          'imagePath': 'assets/images/double_burger.jpg',
-          'price': 15000.0,
-          'rating': '4.9 ⭐',
-          'description': 'Doble carne con queso y tocino',
-        },
-        {
-          'name': 'Papas Fritas',
-          'imagePath': 'assets/images/fries.jpg',
-          'price': 5000.0,
-          'rating': '4.5 ⭐',
-          'description': 'Papas fritas crujientes con salsa',
-        },
-      ];
-    }
-
-    // Default products
     return [
       {
-        'name': 'Producto 1',
-        'imagePath': 'assets/images/default.jpg',
-        'price': 10000.0,
-        'rating': '4.0 ⭐',
-        'description': 'Descripción del producto',
+        'name': 'Hamburguesa Clásica',
+        'imagePath': 'assets/images/burger.jpg',
+        'price': 11000.0,
+        'rating': '4.8 ⭐',
+        'description': 'Hamburguesa con queso, lechuga y tomate',
       },
       {
-        'name': 'Producto 2',
-        'imagePath': 'assets/images/default.jpg',
+        'name': 'Hamburguesa Doble',
+        'imagePath': 'assets/images/double_burger.png',
+        'price': 15000.0,
+        'rating': '4.9 ⭐',
+        'description': 'Doble carne con queso y tocino',
+      },
+      {
+        'name': 'Papas Fritas',
+        'imagePath': 'assets/images/fries.jpg',
+        'price': 5000.0,
+        'rating': '4.5 ⭐',
+        'description': 'Papas fritas crujientes con salsa',
+      },
+      {
+        'name': 'Pizza Pepperoni',
+        'imagePath': 'assets/images/pizza.jpg',
+        'price': 14000.0,
+        'rating': '4.7 ⭐',
+        'description': 'Pizza con doble pepperoni y queso mozzarella',
+      },
+      {
+        'name': 'Tacos al Pastor',
+        'imagePath': 'assets/images/tacos.png',
         'price': 12000.0,
+        'rating': '4.6 ⭐',
+        'description': 'Tacos con carne al pastor, piña y cebolla',
+      },
+      {
+        'name': 'Pollo Frito',
+        'imagePath': 'assets/images/fried_chicken.png',
+        'price': 13000.0,
+        'rating': '4.4 ⭐',
+        'description': 'Piezas de pollo empanizadas y crujientes',
+      },
+      {
+        'name': 'Combo Familiar',
+        'imagePath': 'assets/images/combo.png',
+        'price': 28000.0,
+        'rating': '4.9 ⭐',
+        'description': 'Combo de hamburguesas, papas y bebidas para 4 personas',
+      },
+      {
+        'name': 'Ensalada César',
+        'imagePath': 'assets/images/salad.png',
+        'price': 9000.0,
         'rating': '4.2 ⭐',
-        'description': 'Descripción del producto',
+        'description': 'Ensalada con lechuga romana, crutones y aderezo César',
+      },
+      {
+        'name': 'Refresco Grande',
+        'imagePath': 'assets/images/refresco.png',
+        'price': 3500.0,
+        'rating': '4.3 ⭐',
+        'description': 'Bebida gaseosa fría de 500ml',
+      },
+      {
+        'name': 'Helado de Vainilla',
+        'imagePath': 'assets/images/ice_cream.png',
+        'price': 4000.0,
+        'rating': '4.6 ⭐',
+        'description': 'Helado cremoso de vainilla en vaso',
+      },
+      {
+        'name': 'Sushi Variado',
+        'imagePath': 'assets/images/sushi.png',
+        'price': 18000.0,
+        'rating': '4.7 ⭐',
+        'description': 'Bandeja con rollos surtidos de sushi fresco',
       },
     ];
+
   }
 }
